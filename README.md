@@ -3,165 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Bangun Rumah Interaktif - Ilman & Epit</title>
+<title>Rumah Interaktif Responsif</title>
 <style>
+* {box-sizing:border-box; margin:0; padding:0;}
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(#87ceeb, #ffffff);
-    text-align: center;
+    background: linear-gradient(#87ceeb,#fff);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    min-height:100vh;
 }
 
 header {
-    background: #ff9800;
-    color: white;
-    padding: 15px;
+    background:#ff9800;
+    color:white;
+    padding:15px;
+    width:100%;
+    text-align:center;
 }
 
 .game-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
+    max-width:800px;
+    width:95%;
+    margin-top:20px;
+    position:relative;
 }
 
+/* Rumah */
 .house {
-    margin: 20px auto;
-    width: 220px;
-    height: 220px;
-    position: relative;
-    border-radius: 12px;
-    background: #eee;
-    overflow: hidden;
-    border: 2px solid #555;
+    width:100%;
+    max-width:400px;
+    margin:auto;
+    position:relative;
 }
 
-.part {
-    position: absolute;
-    display: none;
-    opacity: 0;
-    transition: all 0.5s ease;
+/* Pondasi & dinding */
+.foundation {height:50px; background:#8b5e3c; width:100%; border-radius:5px;}
+.wall {height:200px; background:#f5deb3; width:100%; position:relative; top:-50px; border-radius:5px;}
+
+/* Atap */
+.roof {
+    width:0; height:0;
+    border-left:50% solid transparent;
+    border-right:50% solid transparent;
+    border-bottom:80px solid #b22222;
+    position:relative;
+    margin:auto;
 }
 
-.foundation { bottom: 0; width: 100%; height: 40px; background: #795548; }
-.walls { bottom: 40px; width: 100%; height: 100px; background: #ffc107; }
-.roof { top: -60px; width: 0; height: 0; border-left: 110px solid transparent; border-right: 110px solid transparent; border-bottom: 90px solid #f44336; }
+/* Pintu & jendela */
+.door {width:80px;height:120px;background:#654321; position:absolute; bottom:50px; left:50%; transform:translateX(-50%);}
+.window {width:60px;height:60px;background:#87cefa; border:2px solid #000; position:absolute; cursor:pointer; border-radius:5px;}
+.window1 {left:20%; top:50px;} .window2 {right:20%; top:50px;}
+.window.open {background:#b0e0e6;}
 
-.extra1 { top: 20px; left: 20px; width: 40px; height: 40px; background: #4caf50; border-radius: 6px; }
-.extra2 { top: 20px; right: 20px; width: 40px; height: 40px; background: #2196f3; border-radius: 6px; }
-.extra3 { bottom: 60px; left: 20px; width: 40px; height: 40px; background: #9c27b0; border-radius: 6px; }
-.extra4 { bottom: 60px; right: 20px; width: 40px; height: 40px; background: #ffeb3b; border-radius: 6px; }
-.extra6 { top: 80px; left: 80px; width: 40px; height: 40px; background: #ff5722; border-radius: 6px; }
-.extra7 { top: 80px; right: 80px; width: 40px; height: 40px; background: #00bcd4; border-radius: 6px; }
+/* Lampu jendela */
+.light {width:15px;height:15px;background:yellow;border-radius:50%;position:absolute; top:55px; left:23%; display:none;}
+.light2 {left:73%;}
 
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #4caf50;
-    color: white;
+/* Interior mini */
+.interior {width:80%; height:150px; background:#eee; position:relative; margin:10px auto; border:1px solid #ccc; display:none; border-radius:5px; padding:10px;}
+.interior h4 {text-align:center; margin-bottom:10px;}
+
+/* Pohon */
+.tree {width:20px; height:60px; background:#8b5e3c; border-radius:5px; display:inline-block; margin:0 20px; position:relative;}
+.tree::after {content:""; width:50px; height:50px; background:green; border-radius:50%; position:absolute; top:-35px; left:-15px; animation:sway 3s infinite alternate;}
+@keyframes sway {0%{transform:rotate(-5deg);}50%{transform:rotate(5deg);}100%{transform:rotate(-5deg);}}
+
+/* Jalan */
+.path {width:60px; height:120px; background:#ccc; margin:10px auto; border-radius:10px;}
+
+/* NPC */
+.npc {width:30px;height:30px;background:red;border-radius:50%;position:absolute; bottom:0; animation:walk 4s infinite alternate;}
+@keyframes walk {0%{left:0;}100%{left:calc(100% - 30px);}}
+
+/* Responsif */
+@media(max-width:600px){
+    .roof {border-left:45% solid transparent; border-right:45% solid transparent; border-bottom:60px solid #b22222;}
+    .door {width:60px;height:90px;}
+    .window {width:40px;height:40px;}
 }
-
-button:disabled { background: #aaa; }
-
-footer { margin-top: 20px; font-size: 14px; color: #555; }
-
-.house-epit { margin-top: 40px; border: 2px dashed #f44336; }
-
-.turn {
-    font-weight: bold;
-    font-size: 18px;
-    color: #333;
-    margin-top: 10px;
-}
+button {padding:10px 15px; margin:5px; font-size:16px; border:none; border-radius:8px; cursor:pointer; background:#4caf50; color:white;}
 </style>
 </head>
 <body>
 
 <header>
-    <h1>🏠 Game Bangun Rumah Interaktif</h1>
-    <p>Ilman & Epit membangun rumah bersama</p>
+<h1>🏡 Rumah Interaktif Responsif</h1>
+<p>Ilman & Epit membangun rumah</p>
 </header>
 
 <div class="game-container">
-    <div class="turn" id="turnText">Giliran: Ilman</div>
 
-    <h2>Rumah Ilman</h2>
-    <div class="house" id="houseIlman">
-        <div class="part foundation" id="foundation"></div>
-        <div class="part walls" id="walls"></div>
-        <div class="part roof" id="roof"></div>
-        <div class="part extra1" id="extra1"></div>
-        <div class="part extra2" id="extra2"></div>
-        <div class="part extra3" id="extra3"></div>
-        <div class="part extra4" id="extra4"></div>
-        <div class="part extra6" id="extra6"></div>
-        <div class="part extra7" id="extra7"></div>
+<div class="house">
+    <div class="roof"></div>
+    <div class="wall">
+        <div class="door" id="door"></div>
+        <div class="window window1" id="window1"></div>
+        <div class="window window2" id="window2"></div>
+        <div class="light" id="light1"></div>
+        <div class="light light2" id="light2"></div>
     </div>
-
-    <h2>Rumah Epit</h2>
-    <div class="house house-epit" id="houseEpit">
-        <div class="part foundation" id="foundationEpit"></div>
-        <div class="part walls" id="wallsEpit"></div>
-        <div class="part roof" id="roofEpit"></div>
-    </div>
-
-    <div id="buttonsContainer">
-        <h3>Pilih bagian rumah:</h3>
-        <button onclick="build('Ilman','foundation')">🔨 Pondasi Ilman</button>
-        <button onclick="build('Ilman','walls')">🧱 Dinding Ilman</button>
-        <button onclick="build('Ilman','roof')">🏠 Atap Ilman</button>
-        <button onclick="build('Ilman','extra1')">🌳 Bagian 1</button>
-        <button onclick="build('Ilman','extra2')">🌳 Bagian 2</button>
-        <button onclick="build('Ilman','extra3')">🌳 Bagian 3</button>
-        <button onclick="build('Ilman','extra4')">🌳 Bagian 4</button>
-        <button onclick="build('Ilman','extra6')">🌳 Bagian 6</button>
-        <button onclick="build('Ilman','extra7')">🌳 Bagian 7</button>
-
-        <button onclick="build('Epit','foundationEpit')">🔨 Pondasi Epit</button>
-        <button onclick="build('Epit','wallsEpit')">🧱 Dinding Epit</button>
-        <button onclick="build('Epit','roofEpit')">🏠 Atap Epit</button>
-    </div>
-
-    <h3 id="status">Mulai bangun rumah!</h3>
+    <div class="foundation"></div>
 </div>
 
-<footer>
-    🎮 Dibuat oleh <b>Ilman</b> & <b>Epit</b> <br>
-    © 2026 Ilman Game Studio
-</footer>
+<div class="interior" id="interior">
+<h4>Ruang Tamu Mini</h4>
+<p>Sofa, meja, dan karpet tersedia!</p>
+</div>
 
-<audio id="sound">
-    <source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mpeg">
-</audio>
+<div class="trees">
+<div class="tree"></div>
+<div class="tree"></div>
+</div>
+
+<div class="path"></div>
+<div class="npc" id="npc"></div>
+
+<div>
+<button onclick="toggleInterior()">🏠 Masuk Rumah</button>
+<button onclick="toggleLights()">💡 Nyalakan Lampu</button>
+</div>
+
+</div>
 
 <script>
-const sound = document.getElementById("sound");
-const statusText = document.getElementById("status");
-const turnText = document.getElementById("turnText");
+// Jendela interaktif
+document.getElementById('window1').onclick=function(){this.classList.toggle('open');}
+document.getElementById('window2').onclick=function(){this.classList.toggle('open');}
 
-let currentTurn = 'Ilman'; // mulai dengan Ilman
+// Toggle interior
+function toggleInterior(){
+    const interior=document.getElementById('interior');
+    interior.style.display=interior.style.display==='block'?'none':'block';
+}
 
-function build(player, id) {
-    if(player !== currentTurn){
-        alert(`Sekarang giliran ${currentTurn}!`);
-        return;
-    }
-
-    const part = document.getElementById(id);
-    if(part.style.display === 'block') return;
-
-    part.style.display = 'block';
-    setTimeout(()=>part.style.opacity = 1,50);
-    sound.play();
-
-    statusText.innerText = `${player} membangun ${id}!`;
-
-    // Ganti giliran
-    currentTurn = (currentTurn === 'Ilman') ? 'Epit' : 'Ilman';
-    turnText.innerText = `Giliran: ${currentTurn}`;
+// Toggle lampu
+function toggleLights(){
+    const l1=document.getElementById('light1');
+    const l2=document.getElementById('light2');
+    l1.style.display=l1.style.display==='block'?'none':'block';
+    l2.style.display=l2.style.display==='block'?'none':'block';
 }
 </script>
 
